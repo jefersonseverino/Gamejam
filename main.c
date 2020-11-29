@@ -16,13 +16,11 @@ ALLEGRO_DISPLAY *display = NULL;
 ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 
 ALLEGRO_FONT *fonte = NULL;
-ALLEGRO_FONT *fonte_timer = NULL;
 
 ALLEGRO_TIMER *timer = NULL;
-ALLEGRO_TIMER *timer_relogio = NULL;
+ALLEGRO_TIMER *timer_sprite = NULL;
 
 ALLEGRO_BITMAP *personagem[12];
-ALLEGRO_BITMAP *forma = NULL;
 ALLEGRO_BITMAP *imagem_fundo = NULL;
 ALLEGRO_BITMAP *coracao = NULL;
 ALLEGRO_BITMAP *virus = NULL;
@@ -119,11 +117,6 @@ int initAllegro() {
         return 1;
     }
     //Initialize font
-    fonte_timer = al_load_ttf_font("Electrolize-Regular.ttf",50,0);
-    if(!fonte_timer){
-		fprintf(stderr,"Failed to initialize font.\n");
-        return 1;
-    }
     fonte = al_load_ttf_font("Electrolize-Regular.ttf",50,0);
     if(!fonte){
 		fprintf(stderr,"Failed to initialize font.\n");
@@ -224,8 +217,8 @@ int initAllegro() {
         fprintf(stderr, "Failed to create timer.\n");
         return 1;
     }
-    timer_relogio = al_create_timer(0.8);
-    if(!timer_relogio){
+    timer_sprite = al_create_timer(0.8);
+    if(!timer_sprite){
         fprintf(stderr, "Failed to create timer relogio.\n");
         return 1;
     }
@@ -240,11 +233,11 @@ int initAllegro() {
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
-    al_register_event_source(event_queue, al_get_timer_event_source(timer_relogio));
+    al_register_event_source(event_queue, al_get_timer_event_source(timer_sprite));
     return 0;
 }
 
-int pts = 0,pts1 = 0;
+int confirma_mascara = 0,confirma_pocao = 0;
 
 void desenhaMapa(int *coracao1, int *coracao2, int direcao_personagem,int muda_animacao, char pontuacao[],int *posX_virus, int *posY_virus,int *vel_virus
 , int posX, int posY, bool *gerar_virus, bool *colidiu_virus, bool *running,int *pontuacao_personagem,int *posX_mascara,int *posY_mascara, bool *gerar_mascara,
@@ -267,7 +260,7 @@ bool *colidiu_mascara,int *regiao_atual,int *posX_pocao, int *posY_pocao,int *ve
 
     if(!(*gerar_virus)){
         *posX_virus = -100 - (rand()%(200))+1;
-        *posY_virus = -250 - (rand()%100)+1;
+        *posY_virus = 950 - (rand()%100)+1;
         *gerar_virus = true;
     }
     
@@ -303,11 +296,11 @@ bool *colidiu_mascara,int *regiao_atual,int *posX_pocao, int *posY_pocao,int *ve
 
     if(!*colidiu_pocao){
         al_draw_bitmap(pocao,*posX_pocao,*posY_pocao,0);
-    }else if(pts1 == 0){
+    }else if(confirma_pocao == 0){
         *gerar_pocao=false;
         if(*coracao1 < 4) (*coracao1)++;
         else if(*coracao2 < 4) (*coracao2)++;
-        pts1 = 1;
+        confirma_pocao = 1;
     }
 
     if(posX >= (*posX_mascara)-30 && posX <= *posX_mascara+60 && posY >= *posY_mascara-35 && posY <= *posY_mascara+30){
@@ -323,10 +316,10 @@ bool *colidiu_mascara,int *regiao_atual,int *posX_pocao, int *posY_pocao,int *ve
 
     if(!(*colidiu_mascara)){
         al_draw_bitmap(mascara,*posX_mascara,*posY_mascara,0);
-    }else if(pts == 0){
+    }else if(confirma_mascara == 0){
         *gerar_mascara=false;
         *pontuacao_personagem+=5;
-        pts=1;
+        confirma_mascara=1;
     }
 
     al_draw_text(fonte,al_map_rgb(255,255,255),950,50,0,pontuacao);
@@ -347,7 +340,7 @@ int main(){
 	
     // Start the timers
     al_start_timer(timer);
-    al_start_timer(timer_relogio);
+    al_start_timer(timer_sprite);
 	
 	//Variables
     int posX = 50, posY = 50;
@@ -408,7 +401,7 @@ int main(){
                     }
                     if(al_key_down(&keyState,ALLEGRO_KEY_SPACE)){
                     }
-                }else if(event.timer.source == timer_relogio){
+                }else if(event.timer.source == timer_sprite){
                     muda_animacao+=1;
                 }
             }else if(event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP){
@@ -444,7 +437,7 @@ int main(){
                 colidiu_mascara = false;
                 colidiu_virus = false;
                 colidiu_pocao = false;
-                pts = 0; pts1 = 0;
+                confirma_mascara = 0; confirma_pocao = 0;
             }
         }
         //Direita
@@ -467,7 +460,7 @@ int main(){
                 colidiu_mascara = false;
                 colidiu_virus = false;
                 colidiu_pocao = false;
-                pts = 0;  pts1 = 0;
+                confirma_mascara = 0;  confirma_pocao = 0;
             }
         }
         //Esquerda
@@ -490,7 +483,7 @@ int main(){
                 colidiu_mascara = false;
                 colidiu_virus = false;
                 colidiu_pocao = false;
-                pts = 0; pts1 = 0;
+                confirma_mascara = 0; confirma_pocao = 0;
             }
         }
         //Cima
@@ -514,7 +507,7 @@ int main(){
                 colidiu_virus = false;
                 colidiu_mascara = false;
                 colidiu_pocao = false;
-                pts = 0; pts1 = 0;
+                confirma_mascara = 0; confirma_pocao = 0;
             }
         }
 
@@ -625,13 +618,30 @@ int main(){
             al_flip_display();
         }
     }
+
 	al_destroy_audio_stream(musica_fundo);
-    al_destroy_timer(timer_relogio);
-	al_destroy_bitmap(forma);
-    al_destroy_bitmap(personagem[direcao_personagem+muda_animacao]);
+    for(int i = 0;i < 12;i++)
+        al_destroy_bitmap(personagem[i]);
+    for(int i = 0;i < 4;i++){
+        al_destroy_bitmap(coracoes_vida1[i]);
+        al_destroy_bitmap(coracoes_vida2[i]);
+    }    
     al_destroy_bitmap(imagem_fundo);
+    al_destroy_bitmap(imagem_fundo2);
+    al_destroy_bitmap(imagem_fundo3);
+    al_destroy_bitmap(imagem_fundo4);
+    al_destroy_bitmap(imagem_final);
+    al_destroy_bitmap(botao_play);
+    al_destroy_bitmap(botao_reset);
+    al_destroy_bitmap(botao_verde);
+    al_destroy_bitmap(botao_vermelho);
+    al_destroy_bitmap(pocao);
+    al_destroy_bitmap(virus);
+    al_destroy_bitmap(mascara);
 	al_destroy_timer(timer);
+    al_destroy_timer(timer_sprite);
   	al_destroy_display(display);
 	al_destroy_event_queue(event_queue);
+
     return 0;
 }
