@@ -78,35 +78,35 @@ int initAllegro() {
         fprintf(stderr,"Failed to reserve sample.\n");
 		return 1;   
     }
-    /*musica_fundo = al_load_audio_stream("audio.ogg",4,1024);
+    musica_fundo = al_load_audio_stream("audio.ogg",4,1024);
     if(!musica_fundo){
         fprintf(stderr,"Failed to initialzie audio.\n");
 		return 1;   
     }
     al_attach_audio_stream_to_mixer(musica_fundo, al_get_default_mixer());
-    al_set_audio_stream_playmode(musica_fundo, ALLEGRO_PLAYMODE_LOOP);*/
+    al_set_audio_stream_playmode(musica_fundo, ALLEGRO_PLAYMODE_LOOP);
 	//Initialize ttf addon
 	if (!al_init_ttf_addon()){
 		fprintf(stderr,"Failed to initialize ttf addon.\n");
 		return 1;
 	}
-    virus = al_load_bitmap("assets_personagem/virus.png");
+    virus = al_load_bitmap("assets/virus.png");
     if(!virus){
 		fprintf(stderr,"Failed to initialize ttf addon.\n");
 		return 1;
     }
-    personagem[0] = al_load_bitmap("assets_personagem/baixo_1.PNG");
-    personagem[1] = al_load_bitmap("assets_personagem/baixo_2.PNG");
-    personagem[2] = al_load_bitmap("assets_personagem/baixo_3.PNG");
-    personagem[3] = al_load_bitmap("assets_personagem/cima_1.PNG");
-    personagem[4] = al_load_bitmap("assets_personagem/cima_2.PNG");
-    personagem[5] = al_load_bitmap("assets_personagem/cima_3.PNG");
-    personagem[6] = al_load_bitmap("assets_personagem/direita_1.PNG");
-    personagem[7] = al_load_bitmap("assets_personagem/direita_2.PNG");
-    personagem[8] = al_load_bitmap("assets_personagem/direita_3.PNG");
-    personagem[9] = al_load_bitmap("assets_personagem/esquerda_1.PNG");
-    personagem[10] = al_load_bitmap("assets_personagem/esquerda_2.PNG");
-    personagem[11] = al_load_bitmap("assets_personagem/esquerda_3.PNG");
+    personagem[0] = al_load_bitmap("assets/baixo_1.PNG");
+    personagem[1] = al_load_bitmap("assets/baixo_2.PNG");
+    personagem[2] = al_load_bitmap("assets/baixo_3.PNG");
+    personagem[3] = al_load_bitmap("assets/cima_1.PNG");
+    personagem[4] = al_load_bitmap("assets/cima_2.PNG");
+    personagem[5] = al_load_bitmap("assets/cima_3.PNG");
+    personagem[6] = al_load_bitmap("assets/direita_1.PNG");
+    personagem[7] = al_load_bitmap("assets/direita_2.PNG");
+    personagem[8] = al_load_bitmap("assets/direita_3.PNG");
+    personagem[9] = al_load_bitmap("assets/esquerda_1.PNG");
+    personagem[10] = al_load_bitmap("assets/esquerda_2.PNG");
+    personagem[11] = al_load_bitmap("assets/esquerda_3.PNG");
 
 	//Initialize mouse
 	if(!al_install_mouse()){
@@ -129,76 +129,76 @@ int initAllegro() {
         return 1;
     }
     //Initialize background
-    imagem_fundo = al_load_bitmap("assets_personagem/fundo.png");
+    imagem_fundo = al_load_bitmap("assets/fundo.png");
     if(!imagem_fundo){
 		fprintf(stderr,"Failed to initialize background.\n");
         return 1;
     }
 
-    imagem_fundo2 = al_load_bitmap("assets_personagem/fundo_2.png");
+    imagem_fundo2 = al_load_bitmap("assets/fundo_2.png");
 
     if(!imagem_fundo2){
 		fprintf(stderr,"Failed to initialize background.\n");
         return 1;
     }
 
-    imagem_fundo3 = al_load_bitmap("assets_personagem/fundo_3.png");
+    imagem_fundo3 = al_load_bitmap("assets/fundo_3.png");
 
     if(!imagem_fundo3){
 		fprintf(stderr,"Failed to initialize background.\n");
         return 1;
     }
 
-    imagem_fundo4 = al_load_bitmap("assets_personagem/fundo_4.png");
+    imagem_fundo4 = al_load_bitmap("assets/fundo_4.png");
 
     if(!imagem_fundo4){
 		fprintf(stderr,"Failed to initialize background.\n");
         return 1;
     }
 
-    botao_verde = al_load_bitmap("assets_personagem/botao_verde.PNG");
+    botao_verde = al_load_bitmap("assets/botao_verde.PNG");
     if(!botao_verde){
 		fprintf(stderr,"Failed to initialize botao verde.\n");
         return 1;
     }
 
-    botao_vermelho = al_load_bitmap("assets_personagem/botao_vermelho.PNG");
+    botao_vermelho = al_load_bitmap("assets/botao_vermelho.PNG");
     if(!botao_vermelho){
 		fprintf(stderr,"Failed to initialize botao verde.\n");
         return 1;
     }
 
-    pocao = al_load_bitmap("assets_personagem/pocao.png");
+    pocao = al_load_bitmap("assets/pocao.png");
     if(!pocao){
 		fprintf(stderr,"Failed to initialize c.\n");
         return 1;
     }
 
-    botao_play = al_load_bitmap("assets_personagem/botao_play.PNG");
+    botao_play = al_load_bitmap("assets/botao_play.PNG");
     if(!botao_play){
 		fprintf(stderr,"Failed to initialize botao play.\n");
         return 1;
     }
 
-    botao_reset = al_load_bitmap("assets_personagem/reset.png");
+    botao_reset = al_load_bitmap("assets/reset.png");
     if(!botao_reset){
 		fprintf(stderr,"Failed to initialize botao reset.\n");
         return 1;
     }
 
-    coracoes_vida1[0] = al_load_bitmap("assets_personagem/0-4.png");
-    coracoes_vida1[1] = al_load_bitmap("assets_personagem/1-4.png");
-    coracoes_vida1[2] = al_load_bitmap("assets_personagem/2-4.png");
-    coracoes_vida1[3] = al_load_bitmap("assets_personagem/3-4.png");
-    coracoes_vida1[4] = al_load_bitmap("assets_personagem/4-4.png");
+    coracoes_vida1[0] = al_load_bitmap("assets/0-4.png");
+    coracoes_vida1[1] = al_load_bitmap("assets/1-4.png");
+    coracoes_vida1[2] = al_load_bitmap("assets/2-4.png");
+    coracoes_vida1[3] = al_load_bitmap("assets/3-4.png");
+    coracoes_vida1[4] = al_load_bitmap("assets/4-4.png");
 
-    coracoes_vida2[0] = al_load_bitmap("assets_personagem/0-4.png");
-    coracoes_vida2[1] = al_load_bitmap("assets_personagem/1-4.png");
-    coracoes_vida2[2] = al_load_bitmap("assets_personagem/2-4.png");
-    coracoes_vida2[3] = al_load_bitmap("assets_personagem/3-4.png");
-    coracoes_vida2[4] = al_load_bitmap("assets_personagem/4-4.png");
+    coracoes_vida2[0] = al_load_bitmap("assets/0-4.png");
+    coracoes_vida2[1] = al_load_bitmap("assets/1-4.png");
+    coracoes_vida2[2] = al_load_bitmap("assets/2-4.png");
+    coracoes_vida2[3] = al_load_bitmap("assets/3-4.png");
+    coracoes_vida2[4] = al_load_bitmap("assets/4-4.png");
 
-    mascara = al_load_bitmap("assets_personagem/mascara.png");
+    mascara = al_load_bitmap("assets/mascara.png");
     if(!mascara){
 		fprintf(stderr,"Failed to initialize mascara\n");
 		return 1;
