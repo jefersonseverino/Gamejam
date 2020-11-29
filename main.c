@@ -610,7 +610,7 @@ int main(){
             al_flip_display();
         }
     }
-	//al_destroy_audio_stream(musica_fundo);
+	al_destroy_audio_stream(musica_fundo);
     al_destroy_timer(timer_relogio);
 	al_destroy_bitmap(forma);
     al_destroy_bitmap(personagem[direcao_personagem+muda_animacao]);
