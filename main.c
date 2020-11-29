@@ -37,6 +37,7 @@ ALLEGRO_BITMAP *botao_vermelho = NULL;
 ALLEGRO_BITMAP *imagem_fundo2 = NULL;
 ALLEGRO_BITMAP *imagem_fundo3 = NULL;
 ALLEGRO_BITMAP *imagem_fundo4 = NULL;
+ALLEGRO_BITMAP *imagem_final = NULL;
 
 ALLEGRO_AUDIO_STREAM *musica_fundo = NULL;
 
@@ -156,6 +157,13 @@ int initAllegro() {
         return 1;
     }
 
+    imagem_final = al_load_bitmap("assets/fundo_final.PNG");
+
+    if(!imagem_final){
+		fprintf(stderr,"Failed to initialize final background.\n");
+        return 1;
+    }
+
     botao_verde = al_load_bitmap("assets/botao_verde.PNG");
     if(!botao_verde){
 		fprintf(stderr,"Failed to initialize botao verde.\n");
@@ -180,7 +188,7 @@ int initAllegro() {
         return 1;
     }
 
-    botao_reset = al_load_bitmap("assets/reset.png");
+    botao_reset = al_load_bitmap("assets/reset1.png");
     if(!botao_reset){
 		fprintf(stderr,"Failed to initialize botao reset.\n");
         return 1;
@@ -346,7 +354,7 @@ int main(){
     int velx = 0, vely = 0;
     enum regioes {REGIAO_1,REGIAO_2,REGIAO_3,REGIAO_4,REGIAO_5,REGIAO_6,REGIAO_7,REGIAO_8,REGIAO_9,REGIAO_10,REGIAO_11,REGIAO_12,FIM_DE_JOGO,MENU};
     int posX_virus = 50,posY_virus = 50;
-    int regiao_atual = 13;
+    int regiao_atual = MENU;
     int direcao_personagem = 0;
     int muda_animacao = 0;
     int coracao1 = 4, coracao2 = 4;
@@ -408,7 +416,7 @@ int main(){
                     if(event.mouse.x >= 460 && event.mouse.x <= 660 && event.mouse.y >= 350 && event.mouse.y <= 400) inicia_jogo = true;
                 }
                 if(regiao_atual == FIM_DE_JOGO){
-                    if(event.mouse.x>=550 && event.mouse.x <= 620 && event.mouse.y >= 520 && event.mouse.y <= 590) reinicia_jogo = true;
+                    if(event.mouse.x>=535 && event.mouse.x <= 625 && event.mouse.y >= 540 && event.mouse.y <= 620) reinicia_jogo = true;
                 }
             }
         }
@@ -574,9 +582,12 @@ int main(){
                 ,&colidiu_virus,&running,&pontuacao_personagem,&posX_mascara,&posY_mascara, &gerar_mascara,&colidiu_mascara,&regiao_atual
                 ,&posX_pocao,&posY_pocao,&vel_personagem,&gerar_pocao,&colidiu_pocao);
             }else if(regiao_atual == FIM_DE_JOGO){
-                al_draw_text(fonte,al_map_rgb(0,0,0),230,250,0,"A pontuação total do jogador foi: ");
-                al_draw_text(fonte,al_map_rgb(0,0,0),560,380,0,pontuacao);
-                al_draw_bitmap(botao_reset,550,520,0);
+                al_draw_bitmap_region(imagem_final,0,0,LARGURA_TELA,ALTURA_TELA,0,0,0);
+                al_draw_text(fonte,al_map_rgb(255,255,255),430,140,0,"FIM DE JOGO");
+                al_draw_text(fonte,al_map_rgb(255,255,255),430,280,0,"PONTUAÇÃO");
+                al_draw_text(fonte,al_map_rgb(255,255,255),560,390,0,pontuacao);
+                al_draw_text(fonte,al_map_rgb(255,255,255),200,480,0,"CLIQUE PARA JOGAR NOVAMENTE");
+                al_draw_bitmap(botao_reset,550,550,0);
                 if(reinicia_jogo){
                     regiao_atual = 0;
                     coracao1 = 4; coracao2 = 4;
@@ -586,26 +597,30 @@ int main(){
                 }
             }else if(regiao_atual == MENU){
                 al_draw_bitmap(botao_play,460,350,0);
+                al_draw_bitmap(virus,460,250,0);
+                al_draw_bitmap(personagem[7],580,265,0);
                 if(inicia_jogo){
                     regiao_atual = 0;
                 }
             }
-            int i;
-            for(i = 0;i < 3;i++){
-                if(i == regiao_atual) al_draw_bitmap(botao_vermelho,1050+20*i,50,0);
-                else al_draw_bitmap(botao_verde,1050+20*i,50,0);
-            }
-            for(i = 4; i < 7;i++){
-                if(i-1 == regiao_atual) al_draw_bitmap(botao_vermelho,1050+20*(i-4),70,0);
-                else al_draw_bitmap(botao_verde,1050+20*(i-4),70,0);
-            }
-            for(i = 7; i < 10;i++){
-                if(i-1 == regiao_atual) al_draw_bitmap(botao_vermelho,1050+20*(i-7),90,0);
-                else al_draw_bitmap(botao_verde,1050+20*(i-7),90,0);
-            }
-            for(i = 10; i < 13;i++){
-                if(i-1 == regiao_atual) al_draw_bitmap(botao_vermelho,1050+20*(i-10),110,0);
-                else al_draw_bitmap(botao_verde,1050+20*(i-10),110,0);
+            if(regiao_atual != MENU && regiao_atual != FIM_DE_JOGO){
+                int i;
+                for(i = 0;i < 3;i++){
+                    if(i == regiao_atual) al_draw_bitmap(botao_vermelho,1050+20*i,50,0);
+                    else al_draw_bitmap(botao_verde,1050+20*i,50,0);
+                }
+                for(i = 4; i < 7;i++){
+                    if(i-1 == regiao_atual) al_draw_bitmap(botao_vermelho,1050+20*(i-4),70,0);
+                    else al_draw_bitmap(botao_verde,1050+20*(i-4),70,0);
+                }
+                for(i = 7; i < 10;i++){
+                    if(i-1 == regiao_atual) al_draw_bitmap(botao_vermelho,1050+20*(i-7),90,0);
+                    else al_draw_bitmap(botao_verde,1050+20*(i-7),90,0);
+                }
+                for(i = 10; i < 13;i++){
+                    if(i-1 == regiao_atual) al_draw_bitmap(botao_vermelho,1050+20*(i-10),110,0);
+                    else al_draw_bitmap(botao_verde,1050+20*(i-10),110,0);
+                }
             }
             al_flip_display();
         }
